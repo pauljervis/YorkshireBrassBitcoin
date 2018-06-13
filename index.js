@@ -15,10 +15,10 @@ function blockString({
   return `${index} ${minedBy} ${data} ${previousHash} ${nonce}`;
 }
 
-function parseBlock(parts) {
- 
+function parseBlock(blockString) {
+  if(blockString) {
     let i = 2;
-    
+    parts = blockString.split(' ');
 
     return {
       index: parts[i++],
@@ -28,7 +28,7 @@ function parseBlock(parts) {
       nonce: parts[i++],
       hash: parts[i++],
     };
-  
+  }
 }
 
 const previousBlock = parseBlock(process.argv) || {
@@ -42,7 +42,7 @@ const previousBlock = parseBlock(process.argv) || {
 
 
 const newBlock = {
-  index: 1,
+  index: previousBlock.index + 1,
   minedBy: 'Paul&Ed',
   data: '123',
   previousHash: previousBlock.hash,
