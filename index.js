@@ -5,7 +5,7 @@ function hash256(string) {
     .toUpperCase();
 };
 
-function hashBlock({
+function blockString({
                      index,
                      minedBy,
                      data,
@@ -15,7 +15,7 @@ function hashBlock({
   return `${index} ${minedBy} ${data} ${previousHash} ${nonce}`;
 }
 
-const block = {
+const genesisBlock = {
   index: 0,
   minedBy: 'Genesis',
   data: 'Genesis',
@@ -23,7 +23,22 @@ const block = {
   nonce: 52458,
   hash: '000021C1766F55BD5D413F0AC128A5D3D6B50E4F0D608B653209C4D468232C11',
 };
-const hash = hashBlock(block);
-console.log(hash);
 
-console.log(hash256(hash));
+
+const newBlock = {
+  index: 1,
+  minedBy: "Paul & Ed",
+  data: "123",
+  previousHash: genesisBlock.hash,
+  nonce: 0,
+}
+
+let hash = hash256(blockString(newBlock));
+
+while(! hash.startsWith("0000")) {
+  newBlock.nonce++;
+  hash = hash256(blockString(newBlock));
+}
+
+console.log(hash);
+console.log("attempt: ", newBlock.nonce);
