@@ -42,19 +42,18 @@ const previousBlock = parseBlock(process.argv) || {
 
 
 const newBlock = {
-  index: 1,
+  index: previousBlock.index + 1,
   minedBy: 'Paul&Ed',
   data: '123',
   previousHash: previousBlock.hash,
   nonce: 0,
 };
 
-let hash = hash256(blockString(newBlock));
+newBlock.hash = hash256(blockString(newBlock));
 
-while(!hash.startsWith('0000')) {
+while(!newBlock.hash.startsWith('0000')) {
   newBlock.nonce++;
-  hash = hash256(blockString(newBlock));
+  newBlock.hash = hash256(blockString(newBlock));
 }
 
-console.log(hash);
-console.log('attempt: ', newBlock.nonce);
+console.log(newBlock);
