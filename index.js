@@ -15,10 +15,10 @@ function blockString({
   return `${index} ${minedBy} ${data} ${previousHash} ${nonce}`;
 }
 
-function parseBlock(blockString) {
-  if(blockString) {
+function parseBlock(parts) {
+ 
     let i = 2;
-    parts = blockString.split(' ');
+    
 
     return {
       index: parts[i++],
@@ -28,7 +28,7 @@ function parseBlock(blockString) {
       nonce: parts[i++],
       hash: parts[i++],
     };
-  }
+  
 }
 
 const previousBlock = parseBlock(process.argv) || {
@@ -49,12 +49,11 @@ const newBlock = {
   nonce: 0,
 };
 
-let hash = hash256(blockString(newBlock));
+newBlock.hash = hash256(blockString(newBlock));
 
-while(!hash.startsWith('0000')) {
+while(!newBlock.hash.startsWith('0000')) {
   newBlock.nonce++;
-  hash = hash256(blockString(newBlock));
+  newBlock.hash = hash256(blockString(newBlock));
 }
 
-console.log(hash);
-console.log('attempt: ', newBlock.nonce);
+console.log(newBlock);
